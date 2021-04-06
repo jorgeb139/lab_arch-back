@@ -1,0 +1,22 @@
+POST http://localhost:3001/api/projects/
+Content-Type: application/json
+
+{
+    "tittle": "Proyecto 4",
+    "sqr_mts": "200 m2",
+    "ubication": "Pueblo Llano",
+    "date": "13-02-2021",
+    "details": "Lorem ipsum situnLorem ipsum dolor sit amet, consectetur adipiscing elit. In a. dolorem"
+}
+
+###
+
+POST http://localhost:3001/api/projects/
+Content-Type: application/json
+
+{
+    "tittle": "Proyecto 4",
+    "sqr_mts": "200 m2",
+    "date": "13-02-2021",
+    "details": "Lorem ipsum situnLorem ipsum dolor sit amet, consectetur adipiscing elit. In a. dolorem"
+}
