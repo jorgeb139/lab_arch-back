@@ -38,10 +38,10 @@ app.get('/', (request, response) => {
   response.send('<h1>Hola Mundo</h1>')
 })
 
-app.get('/api/projects', (request, response) => {
-  Project.find({}).then(projects => {
-    response.json(projects)
-  })
+
+app.get('/api/projects', async (request, response) => {
+  const projects = await Project.find({})
+  response.json(projects)
 })
 
 app.get('/api/projects/:id', (request, response, next) => {
@@ -72,15 +72,13 @@ app.put('/api/projects/:id', (request, response, next) => {
     }).catch(err => next(err))
 })
 
-app.delete('/api/projects/:id', (request, response, next) => {
+app.delete('/api/projects/:id', async (request, response, next) => {
   const { id } = request.params
-
-  Project.findByIdAndRemove(id).then(() => {
-    response.status(204).end()
-  }).catch(err => next(err))
+  await Project.findByIdAndRemove(id)
+  response.status(204).end()
 })
 
-app.post('/api/projects/', (request, response, next) => {
+app.post('/api/projects/', async (request, response, next) => {
   const project = request.body
 
   if (!project || !project.tittle || !project.sqr_mts || !project.ubication || !project.date || !project.details) {
@@ -97,9 +95,12 @@ app.post('/api/projects/', (request, response, next) => {
     details: project.details
   })
 
-  newProject.save().then(savedProject => {
+  try {
+    const savedProject = await newProject.save()
     response.json(savedProject)
-  }).catch(err => next(err))
+  } catch (error) {
+    next(error)
+  }
 })
 
 app.use(notFound)
@@ -109,6 +110,8 @@ app.use(Sentry.Handlers.errorHandler())
 app.use(handleErrors)
 
 const PORT = process.env.PORT
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running in port ${PORT}`)
 })
+
+module.exports = { app, server }
