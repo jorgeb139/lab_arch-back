@@ -38,6 +38,7 @@ app.get('/', (request, response) => {
   response.send('<h1>Hola Mundo</h1>')
 })
 
+
 app.get('/api/projects', async (request, response) => {
   const projects = await Project.find({})
   response.json(projects)
